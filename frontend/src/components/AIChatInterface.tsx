@@ -9,7 +9,7 @@ import { Send, Brain, User, Lightbulb, BookOpen, Calculator } from "lucide-react
 
 interface Message {
   id: string;
-  type: 'user' | 'ai';
+  type: "user" | "ai";
   content: string;
   timestamp: Date;
   suggestions?: string[];
@@ -18,17 +18,18 @@ interface Message {
 export const AIChatInterface = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: '1',
-      type: 'ai',
-      content: "Hello! I'm your AI tutor. I'm here to help you with your studies. What would you like to learn about today?",
+      id: "1",
+      type: "ai",
+      content:
+        "Hello! I'm your AI tutor. I'm here to help you with your studies. What would you like to learn about today?",
       timestamp: new Date(),
       suggestions: [
         "Explain quadratic equations",
         "Help with physics problems",
         "Create a study plan",
-        "Generate practice questions"
-      ]
-    }
+        "Generate practice questions",
+      ],
+    },
   ]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -36,7 +37,7 @@ export const AIChatInterface = () => {
     { icon: Calculator, label: "Math Help", prompt: "I need help with mathematics" },
     { icon: BookOpen, label: "Study Plan", prompt: "Create a study plan for me" },
     { icon: Lightbulb, label: "Explain Concept", prompt: "Explain a concept to me" },
-    { icon: Brain, label: "Quiz Me", prompt: "Create a quiz for me" }
+    { icon: Brain, label: "Quiz Me", prompt: "Create a quiz for me" },
   ];
 
   const handleSendMessage = () => {
@@ -44,54 +45,59 @@ export const AIChatInterface = () => {
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      type: 'user',
+      type: "user",
       content: newMessage,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setNewMessage("");
 
     // Simulate AI response
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        type: 'ai',
+        type: "ai",
         content: `I understand you're asking about "${newMessage}". Let me help you with that. This is a simulated response - in a real implementation, this would be connected to an AI service that provides detailed explanations, step-by-step solutions, and personalized guidance based on your learning goals.`,
         timestamp: new Date(),
         suggestions: [
           "Can you give me more examples?",
           "I need practice problems",
           "Explain it differently",
-          "What's the next topic?"
-        ]
+          "What's the next topic?",
+        ],
       };
-      setMessages(prev => [...prev, aiResponse]);
+      setMessages((prev) => [...prev, aiResponse]);
     }, 1000);
   };
 
   const handleSuggestion = (suggestion: string) => {
     setNewMessage(suggestion);
-};
+  };
+
   const handleQuickAction = (prompt: string) => {
     setNewMessage(prompt);
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-background text-foreground p-6 space-y-6 transition-colors">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
             <Brain className="w-8 h-8 text-primary" />
             AI Tutor Chat
           </h1>
-          <p className="text-muted-foreground">Get instant help with your studies</p>
+          <p className="text-muted-foreground">
+            Get instant help with your studies
+          </p>
         </div>
       </div>
+
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Chat Interface */}
         <div className="lg:col-span-3">
-          <Card className="h-[600px] flex flex-col">
+          <Card className="h-[600px] flex flex-col border border-border shadow-md dark:shadow-lg dark:bg-muted/30 rounded-xl backdrop-blur-sm transition-colors">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
@@ -100,11 +106,18 @@ export const AIChatInterface = () => {
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4">
               {/* Messages */}
-              <ScrollArea className="flex-1 pr-4">
+              <ScrollArea className="flex-1 pr-4 scrollbar-thin scrollbar-thumb-muted">
                 <div className="space-y-4">
                   {messages.map((message) => (
-                    <div key={message.id} className={`flex gap-3 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      {message.type === 'ai' && (
+                    <div
+                      key={message.id}
+                      className={`flex gap-3 ${
+                        message.type === "user"
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
+                      {message.type === "ai" && (
                         <Avatar className="w-8 h-8">
                           <AvatarFallback className="bg-primary text-primary-foreground">
                             <Brain className="w-4 h-4" />
@@ -112,16 +125,21 @@ export const AIChatInterface = () => {
                         </Avatar>
                       )}
 
-                          
-                      <div className={`max-w-[80%] space-y-2 ${message.type === 'user' ? 'order-first' : ''}`}>
-                        <div className={`p-3 rounded-lg ${
-                          message.type === 'user' 
-                            ? 'bg-primary text-primary-foreground ml-auto' 
-                            : 'bg-muted'
-                        }`}>
+                      <div
+                        className={`max-w-[80%] space-y-2 ${
+                          message.type === "user" ? "order-first" : ""
+                        }`}
+                      >
+                        <div
+                          className={`p-3 rounded-lg ${
+                            message.type === "user"
+                              ? "bg-primary text-primary-foreground ml-auto"
+                              : "bg-muted dark:bg-muted/50"
+                          }`}
+                        >
                           <p className="text-sm">{message.content}</p>
                         </div>
-                        
+
                         {message.suggestions && (
                           <div className="flex flex-wrap gap-1">
                             {message.suggestions.map((suggestion, index) => (
@@ -129,7 +147,7 @@ export const AIChatInterface = () => {
                                 key={index}
                                 variant="outline"
                                 size="sm"
-                                className="h-auto py-1 px-2 text-xs"
+                                className="h-auto py-1 px-2 text-xs transition-colors hover:bg-accent hover:text-accent-foreground"
                                 onClick={() => handleSuggestion(suggestion)}
                               >
                                 {suggestion}
@@ -138,12 +156,12 @@ export const AIChatInterface = () => {
                           </div>
                         )}
 
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground italic">
                           {message.timestamp.toLocaleTimeString()}
                         </div>
                       </div>
-                      
-                      {message.type === 'user' && (
+
+                      {message.type === "user" && (
                         <Avatar className="w-8 h-8">
                           <AvatarFallback>
                             <User className="w-4 h-4" />
@@ -161,10 +179,13 @@ export const AIChatInterface = () => {
                   placeholder="Ask me anything about your studies..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                   className="flex-1"
                 />
-                <Button onClick={handleSendMessage} disabled={!newMessage.trim()}>
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!newMessage.trim()}
+                >
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
@@ -175,7 +196,7 @@ export const AIChatInterface = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <Card>
+          <Card className="border border-border shadow-sm dark:shadow-md dark:bg-muted/30 rounded-lg backdrop-blur-sm transition-colors">
             <CardHeader>
               <CardTitle className="text-lg">Quick Actions</CardTitle>
             </CardHeader>
@@ -186,7 +207,7 @@ export const AIChatInterface = () => {
                   <Button
                     key={action.label}
                     variant="outline"
-                    className="w-full justify-start gap-2"
+                    className="w-full justify-start gap-2 transition-colors hover:bg-accent hover:text-accent-foreground"
                     onClick={() => handleQuickAction(action.prompt)}
                   >
                     <Icon className="w-4 h-4" />
@@ -198,7 +219,7 @@ export const AIChatInterface = () => {
           </Card>
 
           {/* Study Context */}
-          <Card>
+          <Card className="border border-border shadow-sm dark:shadow-md dark:bg-muted/30 rounded-lg backdrop-blur-sm transition-colors">
             <CardHeader>
               <CardTitle className="text-lg">Current Context</CardTitle>
             </CardHeader>
@@ -206,12 +227,18 @@ export const AIChatInterface = () => {
               <div>
                 <h4 className="font-medium text-sm mb-2">Active Courses</h4>
                 <div className="space-y-1">
-                  <Badge variant="secondary" className="block text-center">Advanced Math</Badge>
-                  <Badge variant="secondary" className="block text-center">Physics 101</Badge>
-                  <Badge variant="secondary" className="block text-center">Chemistry</Badge>
+                  <Badge variant="secondary" className="block text-center">
+                    Advanced Math
+                  </Badge>
+                  <Badge variant="secondary" className="block text-center">
+                    Physics 101
+                  </Badge>
+                  <Badge variant="secondary" className="block text-center">
+                    Chemistry
+                  </Badge>
                 </div>
               </div>
-              
+
               <div>
                 <h4 className="font-medium text-sm mb-2">Recent Topics</h4>
                 <div className="text-xs text-muted-foreground space-y-1">
@@ -224,7 +251,7 @@ export const AIChatInterface = () => {
           </Card>
 
           {/* AI Features */}
-          <Card>
+          <Card className="border border-border shadow-sm dark:shadow-md dark:bg-muted/30 rounded-lg backdrop-blur-sm transition-colors">
             <CardHeader>
               <CardTitle className="text-lg">AI Capabilities</CardTitle>
             </CardHeader>
@@ -244,4 +271,3 @@ export const AIChatInterface = () => {
     </div>
   );
 };
-       

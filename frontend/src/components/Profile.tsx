@@ -7,14 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  User, 
-  Edit3, 
-  Save, 
-  X, 
-  Trophy, 
-  Target, 
-  Clock, 
+import {
+  User,
+  Edit3,
+  Save,
+  X,
+  Trophy,
+  Target,
+  Clock,
   BookOpen,
   Award,
   TrendingUp,
@@ -77,31 +77,31 @@ export const Profile = () => {
             <User className="w-8 h-8 text-primary" />
             My Profile
           </h1>
-          <p className="text-muted-foreground">Manage your account and track your learning journey</p>
+          <p className="text-muted-foreground">
+            Manage your account and track your learning journey
+          </p>
         </div>
-        <Button 
+        <Button
           onClick={() => setIsEditing(!isEditing)}
           variant={isEditing ? "outline" : "default"}
           className="gap-2"
         >
           {isEditing ? (
             <>
-              <X className="w-4 h-4" />
-              Cancel
+              <X className="w-4 h-4" /> Cancel
             </>
           ) : (
             <>
-              <Edit3 className="w-4 h-4" />
-              Edit Profile
+              <Edit3 className="w-4 h-4" /> Edit Profile
             </>
           )}
         </Button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Profile Information */}
+        {/* Profile Info */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="bg-gradient-card">
+          <Card className="bg-card shadow-md border border-border hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Personal Information</CardTitle>
             </CardHeader>
@@ -194,8 +194,7 @@ export const Profile = () => {
               {isEditing && (
                 <div className="flex gap-2 pt-4">
                   <Button onClick={handleSave} className="gap-2">
-                    <Save className="w-4 h-4" />
-                    Save Changes
+                    <Save className="w-4 h-4" /> Save Changes
                   </Button>
                   <Button variant="outline" onClick={handleCancel}>
                     Cancel
@@ -206,10 +205,9 @@ export const Profile = () => {
           </Card>
         </div>
 
-        {/* Sidebar - Stats and Progress */}
+        {/* Stats and Progress */}
         <div className="space-y-6">
-          {/* Study Statistics */}
-          <Card>
+          <Card className="bg-card shadow-md border border-border hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="text-lg">Study Statistics</CardTitle>
             </CardHeader>
@@ -229,8 +227,7 @@ export const Profile = () => {
             </CardContent>
           </Card>
 
-          {/* Weekly Progress */}
-          <Card>
+          <Card className="bg-card shadow-md border border-border hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="text-lg">Weekly Goal</CardTitle>
             </CardHeader>
@@ -251,7 +248,7 @@ export const Profile = () => {
       </div>
 
       {/* Achievements */}
-      <Card>
+      <Card className="bg-card shadow-md border border-border hover:shadow-lg transition-shadow">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Award className="w-5 h-5 text-primary" />
@@ -272,9 +269,13 @@ export const Profile = () => {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-full ${
-                      achievement.earned ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                    }`}>
+                    <div
+                      className={`p-2 rounded-full ${
+                        achievement.earned
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted text-muted-foreground'
+                      }`}
+                    >
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="space-y-1 flex-1">

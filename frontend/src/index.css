@@ -29,8 +29,9 @@
     --muted-foreground: 215 16% 47%;
 
     /* Accent: Success green for achievements */
-    --accent: 150 60% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 210 85% 45%;      
+--accent-foreground: 0 0% 100%; 
+
 
     /* Success for progress */
     --success: 145 65% 45%;
@@ -127,5 +128,13 @@
 
   body {
     @apply bg-background text-foreground;
+    margin: 0; /* reset default browser margin */
+    padding: 0; /* reset default browser padding */
   }
+}
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+:root, .dark {
+  @apply transition-colors duration-300;
 }

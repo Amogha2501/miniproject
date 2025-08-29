@@ -77,7 +77,7 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="min-h-screen bg-background text-foreground p-6 space-y-6 transition-colors">
           {/* Goal Title */}
           <div className="space-y-2">
             <Label htmlFor="title">Goal Title</Label>

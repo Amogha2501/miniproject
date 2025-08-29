@@ -50,7 +50,7 @@ export const Dashboard = () => {
   ];
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-background text-foreground p-6 space-y-6 transition-colors">
       {/* Welcome Header */}
       <div className="flex items-center justify-between">
         <div>
