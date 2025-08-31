@@ -12,13 +12,7 @@ interface LandingPageProps {
 }
 
 export const LandingPage = ({ onLogin }: LandingPageProps) => {
- HEAD
   const [isLogin, setIsLogin] = useState(true);
-=======
-  const [isLogin, setIsLogin] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { dark, toggle } = useTheme();
- 2b80cd2 (Local changes before rebase)
 
   const features = [
     { icon: Brain, title: "AI-Powered Learning", description: "Get personalized study plans and instant answers from our advanced AI tutor" },
@@ -26,7 +20,7 @@ export const LandingPage = ({ onLogin }: LandingPageProps) => {
     { icon: BookOpen, title: "Smart Notes", description: "AI-generated summaries and personal note-taking in one unified system" },
     { icon: TrendingUp, title: "Progress Analytics", description: "Visualize your learning journey with comprehensive progress tracking" },
   ];
-
+  const [loading, setLoading] = useState(false);
   const handleAuth = () => {
     setLoading(true);
     setTimeout(() => {
@@ -34,6 +28,7 @@ export const LandingPage = ({ onLogin }: LandingPageProps) => {
       onLogin();
     }, 1500);
   };
+  const { dark, toggle } = useTheme();
 
   return (
     <div className="min-h-screen bg-gradient-hero dark:bg-gradient-to-b dark:from-gray-950 dark:to-gray-900 transition-colors duration-500">
@@ -76,9 +71,7 @@ export const LandingPage = ({ onLogin }: LandingPageProps) => {
                 Start Learning Free
               </Button>
               <Button
-                variant="outline"
-                size="lg"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                variant="hero" size="lg" className="gap-2 shadow-lg hover:shadow-glow"
               >
                 Watch Demo
               </Button>
@@ -120,19 +113,21 @@ export const LandingPage = ({ onLogin }: LandingPageProps) => {
               )}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-800 dark:text-gray-200">Email</Label>
-                <Input id="email" type="email" placeholder="Enter your email" className="dark:bg-gray-800 dark:text-white border-gray-700" />
+                <Input id="email" type="email" placeholder="Enter your email" className="dark:bg-gray-800 dark:text-white border-gray-700 mt-2" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-800 dark:text-gray-200">Password</Label>
                 <Input id="password" type="password" placeholder="Enter your password" className="dark:bg-gray-800 dark:text-white border-gray-700" />
               </div>
-              <Button
-                className="w-full flex items-center justify-center gap-2"
-                variant="default"
-                onClick={handleAuth}
-              >
+              <div className="flex justify-center "> 
+               <Button
+               className="mt-4 bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-gray-100 border border-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white transition-all duration-300 px-6"
+               variant="default"
+               onClick={handleAuth}
+               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isLogin ? "Sign In" : "Create Account"}
               </Button>
+                </div>
               <div className="text-center text-sm text-gray-600 dark:text-gray-300">
                 {isLogin ? "Don't have an account? " : "Already have an account? "}
                 <button

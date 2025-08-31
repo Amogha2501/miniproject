@@ -52,10 +52,8 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
   };
 
   const handleCreateGoal = () => {
-    // Here you would typically send the data to your backend
     console.log("Creating goal:", goalData, "Files:", uploadedFiles);
     onOpenChange(false);
-    // Reset form
     setGoalData({
       title: "",
       subject: "",
@@ -67,6 +65,8 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
     setUploadedFiles([]);
   };
 
+  const cardClasses = "bg-[rgba(30,30,35,0.75)] backdrop-blur-md border border-gray-700 shadow-lg rounded-2xl transition-all duration-300";
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -77,8 +77,7 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
           </DialogDescription>
         </DialogHeader>
 
-        <div className="min-h-screen bg-background text-foreground p-6 space-y-6 transition-colors">
-          {/* Goal Title */}
+        <div className="min-h-screen bg-gradient-to-b from-[#0f0f11] to-[#1a1a1f] text-gray-100 p-6 space-y-6 transition-colors">
           <div className="space-y-2">
             <Label htmlFor="title">Goal Title</Label>
             <Input
@@ -86,17 +85,17 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
               placeholder="e.g., Master Calculus Fundamentals"
               value={goalData.title}
               onChange={(e) => setGoalData({...goalData, title: e.target.value})}
+              className="bg-gray-800 text-white placeholder-gray-400 focus:border-blue-500"
             />
           </div>
 
-          {/* Subject Selection */}
           <div className="space-y-2">
             <Label>Subject</Label>
             <Select value={goalData.subject} onValueChange={(value) => setGoalData({...goalData, subject: value})}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-gray-800 text-white">
                 <SelectValue placeholder="Select a subject" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-gray-800 text-white">
                 {subjects.map((subject) => (
                   <SelectItem key={subject} value={subject}>{subject}</SelectItem>
                 ))}
@@ -104,7 +103,6 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
             </Select>
           </div>
 
-          {/* Goal Type */}
           <div className="space-y-3">
             <Label>Goal Type</Label>
             <div className="grid gap-3">
@@ -112,17 +110,17 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
                 <div
                   key={type.value}
                   className={cn(
-                    "p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md",
+                    "p-4 border rounded-lg cursor-pointer transition-all hover:shadow-xl hover:bg-gray-700/50",
                     goalData.goalType === type.value 
-                      ? "border-primary bg-primary/5 shadow-md" 
-                      : "border-border"
+                      ? "border-blue-500 bg-blue-500/10 shadow-md" 
+                      : "border-gray-700"
                   )}
                   onClick={() => setGoalData({...goalData, goalType: type.value})}
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">{type.label}</h4>
-                      <p className="text-sm text-muted-foreground">{type.description}</p>
+                      <p className="text-sm text-gray-400">{type.description}</p>
                     </div>
                     {goalData.goalType === type.value && (
                       <Badge variant="default">Selected</Badge>
@@ -133,7 +131,6 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
             </div>
           </div>
 
-          {/* Duration and Target Date */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Study Duration (hours/week)</Label>
@@ -142,6 +139,7 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
                 placeholder="e.g., 5"
                 value={goalData.duration}
                 onChange={(e) => setGoalData({...goalData, duration: e.target.value})}
+                className="bg-gray-800 text-white placeholder-gray-400 focus:border-blue-500"
               />
             </div>
             <div className="space-y-2">
@@ -151,46 +149,44 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !goalData.targetDate && "text-muted-foreground"
+                      "w-full justify-start text-left font-normal bg-gray-800 text-white",
+                      !goalData.targetDate && "text-gray-400"
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {goalData.targetDate ? format(goalData.targetDate, "PPP") : "Pick a date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
+                <PopoverContent className="w-auto p-0 bg-gray-800 text-white">
                   <Calendar
                     mode="single"
                     selected={goalData.targetDate}
                     onSelect={(date) => setGoalData({...goalData, targetDate: date})}
                     initialFocus
+                    className="bg-gray-800 text-white"
                   />
                 </PopoverContent>
               </Popover>
             </div>
           </div>
 
-          {/* Description */}
           <div className="space-y-2">
             <Label htmlFor="description">Description (Optional)</Label>
             <Textarea
               id="description"
-              placeholder="Describe your learning objectives, specific topics you want to focus on, or any challenges you're facing..."
+              placeholder="Describe your learning objectives..."
               value={goalData.description}
               onChange={(e) => setGoalData({...goalData, description: e.target.value})}
               rows={3}
+              className="bg-gray-800 text-white placeholder-gray-400 focus:border-blue-500"
             />
           </div>
 
-          {/* File Upload */}
           <div className="space-y-3">
             <Label>Upload Study Materials (Optional)</Label>
-            <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-              <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mb-2">
-                Upload PDFs, notes, or other study materials
-              </p>
+            <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 text-center transition-all hover:shadow-xl hover:bg-gray-700/50">
+              <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+              <p className="text-sm text-gray-400 mb-2">Upload PDFs, notes, or other study materials</p>
               <input
                 type="file"
                 multiple
@@ -199,44 +195,38 @@ export const CreateGoalDialog = ({ open, onOpenChange }: CreateGoalDialogProps) 
                 className="hidden"
                 id="file-upload"
               />
-              <Button variant="outline" asChild>
-                <label htmlFor="file-upload" className="cursor-pointer">
-                  Choose Files
-                </label>
+              <Button variant="outline" asChild className="bg-gray-800 text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500">
+                <label htmlFor="file-upload" className="cursor-pointer">Choose Files</label>
               </Button>
             </div>
             
-            {/* Uploaded Files */}
             {uploadedFiles.length > 0 && (
               <div className="space-y-2">
                 <Label>Uploaded Files:</Label>
                 <div className="flex flex-wrap gap-2">
                   {uploadedFiles.map((fileName, index) => (
-                    <Badge key={index} variant="secondary" className="gap-1">
+                    <Badge key={index} variant="secondary" className="gap-1 bg-gray-800 text-white">
                       {fileName}
-                      <X 
-                        className="w-3 h-3 cursor-pointer" 
-                        onClick={() => removeFile(fileName)}
-                      />
+                      <X className="w-3 h-3 cursor-pointer" onClick={() => removeFile(fileName)} />
                     </Badge>
                   ))}
                 </div>
               </div>
             )}
           </div>
-        </div>
 
-        <div className="flex gap-3 pt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleCreateGoal} 
-            className="flex-1"
-            disabled={!goalData.title || !goalData.subject || !goalData.goalType}
-          >
-            Create Goal
-          </Button>
+          <div className="flex gap-3 pt-4">
+            <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1 bg-gray-800 text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500">
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleCreateGoal} 
+              className="flex-1 bg-gray-800 text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500"
+              disabled={!goalData.title || !goalData.subject || !goalData.goalType}
+            >
+              Create Goal
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

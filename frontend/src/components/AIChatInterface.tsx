@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -53,12 +54,11 @@ export const AIChatInterface = () => {
     setMessages((prev) => [...prev, userMessage]);
     setNewMessage("");
 
-    // Simulate AI response
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         type: "ai",
-        content: `I understand you're asking about "${newMessage}". Let me help you with that. This is a simulated response - in a real implementation, this would be connected to an AI service that provides detailed explanations, step-by-step solutions, and personalized guidance based on your learning goals.`,
+        content: `I understand you're asking about "${newMessage}". Let me help you with that. This is a simulated response.`,
         timestamp: new Date(),
         suggestions: [
           "Can you give me more examples?",
@@ -79,44 +79,43 @@ export const AIChatInterface = () => {
     setNewMessage(prompt);
   };
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const cardClasses = "bg-card border border-border shadow-lg hover:shadow-xl rounded-2xl transition-all duration-300";
+
   return (
-    <div className="min-h-screen bg-background text-foreground p-6 space-y-6 transition-colors">
+    <div className="min-h-screen bg-background text-foreground font-sans p-6 space-y-6 transition-colors">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Brain className="w-8 h-8 text-primary" />
-            AI Tutor Chat
-          </h1>
-          <p className="text-muted-foreground">
-            Get instant help with your studies
-          </p>
+      <motion.div initial="hidden" animate="visible" variants={fadeInUp} transition={{ duration: 0.6 }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Brain className="w-8 h-8 text-primary" />
+              AI Tutor Chat
+            </h1>
+            <p className="text-muted-foreground">Get instant help with your studies</p>
+          </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Chat Interface */}
-        <div className="lg:col-span-3">
-          <Card className="h-[600px] flex flex-col border border-border shadow-md dark:shadow-lg dark:bg-muted/30 rounded-xl backdrop-blur-sm transition-colors">
+        <motion.div initial="hidden" animate="visible" variants={fadeInUp} transition={{ duration: 0.6 }} className="lg:col-span-3">
+          <Card className={cardClasses + " h-[600px] flex flex-col"}>
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium">AI Tutor is online</span>
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-muted-foreground">AI Tutor is online</span>
               </div>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4">
-              {/* Messages */}
-              <ScrollArea className="flex-1 pr-4 scrollbar-thin scrollbar-thumb-muted">
+              <ScrollArea className="flex-1 pr-4 scrollbar-thin scrollbar-thumb-border">
                 <div className="space-y-4">
                   {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex gap-3 ${
-                        message.type === "user"
-                          ? "justify-end"
-                          : "justify-start"
-                      }`}
-                    >
+                    <div key={message.id} className={`flex gap-3 ${message.type === "user" ? "justify-end" : "justify-start"}`}>
                       {message.type === "ai" && (
                         <Avatar className="w-8 h-8">
                           <AvatarFallback className="bg-primary text-primary-foreground">
@@ -125,29 +124,24 @@ export const AIChatInterface = () => {
                         </Avatar>
                       )}
 
-                      <div
-                        className={`max-w-[80%] space-y-2 ${
-                          message.type === "user" ? "order-first" : ""
-                        }`}
-                      >
+                      <div className={`max-w-[80%] space-y-2 ${message.type === "user" ? "order-first" : ""}`}>
                         <div
                           className={`p-3 rounded-lg ${
                             message.type === "user"
-                              ? "bg-primary text-primary-foreground ml-auto"
-                              : "bg-muted dark:bg-muted/50"
-                          }`}
+                              ? "bg-primary text-primary-foreground hover:opacity-90"
+                              : "bg-muted text-muted-foreground"
+                          } transition-all duration-300`}
                         >
                           <p className="text-sm">{message.content}</p>
                         </div>
 
                         {message.suggestions && (
-                          <div className="flex flex-wrap gap-1">
+                          <div className="flex flex-wrap gap-1 mt-1">
                             {message.suggestions.map((suggestion, index) => (
                               <Button
                                 key={index}
-                                variant="outline"
                                 size="sm"
-                                className="h-auto py-1 px-2 text-xs transition-colors hover:bg-accent hover:text-accent-foreground"
+                                className="h-auto py-1 px-2 text-xs transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
                                 onClick={() => handleSuggestion(suggestion)}
                               >
                                 {suggestion}
@@ -173,8 +167,7 @@ export const AIChatInterface = () => {
                 </div>
               </ScrollArea>
 
-              {/* Message Input */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-2">
                 <Input
                   placeholder="Ask me anything about your studies..."
                   value={newMessage}
@@ -185,18 +178,19 @@ export const AIChatInterface = () => {
                 <Button
                   onClick={handleSendMessage}
                   disabled={!newMessage.trim()}
+                  className="bg-primary text-primary-foreground hover:opacity-90 transition-all duration-300"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <Card className="border border-border shadow-sm dark:shadow-md dark:bg-muted/30 rounded-lg backdrop-blur-sm transition-colors">
+          <Card className={cardClasses}>
             <CardHeader>
               <CardTitle className="text-lg">Quick Actions</CardTitle>
             </CardHeader>
@@ -206,8 +200,8 @@ export const AIChatInterface = () => {
                 return (
                   <Button
                     key={action.label}
-                    variant="outline"
-                    className="w-full justify-start gap-2 transition-colors hover:bg-accent hover:text-accent-foreground"
+                    size="sm"
+                    className="w-full justify-start gap-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                     onClick={() => handleQuickAction(action.prompt)}
                   >
                     <Icon className="w-4 h-4" />
@@ -219,7 +213,7 @@ export const AIChatInterface = () => {
           </Card>
 
           {/* Study Context */}
-          <Card className="border border-border shadow-sm dark:shadow-md dark:bg-muted/30 rounded-lg backdrop-blur-sm transition-colors">
+          <Card className={cardClasses}>
             <CardHeader>
               <CardTitle className="text-lg">Current Context</CardTitle>
             </CardHeader>
@@ -251,7 +245,7 @@ export const AIChatInterface = () => {
           </Card>
 
           {/* AI Features */}
-          <Card className="border border-border shadow-sm dark:shadow-md dark:bg-muted/30 rounded-lg backdrop-blur-sm transition-colors">
+          <Card className={cardClasses}>
             <CardHeader>
               <CardTitle className="text-lg">AI Capabilities</CardTitle>
             </CardHeader>
