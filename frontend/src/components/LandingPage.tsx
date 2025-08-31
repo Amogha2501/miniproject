@@ -31,7 +31,7 @@ export const LandingPage = ({ onLogin }: LandingPageProps) => {
   const { dark, toggle } = useTheme();
 
   return (
-    <div className="min-h-screen bg-gradient-hero dark:bg-gradient-to-b dark:from-gray-950 dark:to-gray-900 transition-colors duration-500">
+    <div className="min-h-screen bg-gradient-hero dark:bg-gradient-to-b dark:from-gray-950 dark:to-gray-900 transition-colors duration-500 ">
       {/* Header */}
       <header className="px-6 py-4 flex items-center justify-between border-b border-gray-700/50">
         <div className="flex items-center gap-3">
@@ -40,7 +40,7 @@ export const LandingPage = ({ onLogin }: LandingPageProps) => {
         </div>
         <Button
           variant="ghost"
-          className="text-white dark:text-gray-200 hover:bg-white/10"
+          className="text-white dark:text-gray-200 hover:bg-white/10 border border-white dark:border-gray-400 rounded-lg"
           onClick={toggle}
         >
           {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
